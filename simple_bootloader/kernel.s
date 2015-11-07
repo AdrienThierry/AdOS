@@ -9,24 +9,49 @@ _start :
 		mov %ax, %ss		# ss = 0x1000
 		mov $0x100, %sp		# 256 words in stack (512 bytes)
 
-		mov $0x0007, %bx	# Background and text color
-		mov $0x02, %dh		# Line number
-		push $msg			# Message address
+		# --------------------------------------------------
+		# print call
+		# --------------------------------------------------
+		push $0x0007		# Page 0 + background and text color
+		push $0x02			# Line number
 		push $21			# Message size
+		push $msg			# Message address
 
 		call print
 
+		add $8, %sp			# Delete function parameters on stack
+
+		# --------------------------------------------------
 		jmp idle
 
 print :
-		mov %sp, %bp		# Copy sp in bp
+		push %bp
+		mov %sp, %bp
+
+		# Save registers
+		push %bx
+		push %si
+		push %di
+		push %bp
 
 		mov $0,%dl			# Column 0
 		mov $0x1301,%ax		# Function to print a string
-		mov 2(%bp), %cx		# Message size
+		mov 6(%bp), %cx		# Message size
+		mov 8(%bp), %dh		# Line number
+		mov 10(%bp), %bx	# Page + background and text color
 		mov 4(%bp), %bp		# Message address
 
 		int $0x10			# Interrupt
+
+		# Restore registers
+		pop %bp
+		pop %di
+		pop %si
+		pop %bx
+
+		mov %bp, %sp
+
+		pop %bp
 
 		ret
 		

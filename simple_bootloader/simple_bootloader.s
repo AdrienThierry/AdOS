@@ -37,10 +37,6 @@ load_kernel :
 		int $0x13			# Interrupt
 
 		ljmp $0x1000, $0x0000 	# Jump to kernel
-	
-idle :
-		hlt
-		jmp idle
 
 boot_msg:
 		.asciz "Wow such booting..."
