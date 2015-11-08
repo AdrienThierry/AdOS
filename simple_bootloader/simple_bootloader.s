@@ -13,7 +13,7 @@ _start :
 		mov $0x100, %sp		# 256 words in stack (512 bytes)
 		
 clear_screen :
-		mov $0x0012, %ax	# 640 * 480
+		mov $0x0003, %ax	# 80*25 (video mode 3)
 		int $0x10
 
 print :
@@ -21,8 +21,8 @@ print :
 		mov $0, %dh			# Row 0
 		mov $0, %dl			# Column 0
 		mov $0x1301, %ax	# Function to print a string
-		mov $19, %cx		# Message address
-		mov $boot_msg, %bp	# Message size
+		mov $19, %cx		# Message size
+		mov $boot_msg, %bp	# Message address
 
 		int $0x10			# Interrupt
 	
@@ -36,10 +36,33 @@ load_kernel :
 		mov $0, %bx			# Offset to load kernel in
 		int $0x13			# Interrupt
 
-		ljmp $0x1000, $0x0000 	# Jump to kernel
+		mov $0x7c0, %ax
+		mov %ax, %es
+		
+		jc error			# If read error
+		ljmp $0x1000, $0x0000 	# Else Jump to kernel
+
+error :
+		mov $0x0004, %bx	# Page 00 + Background and text color
+		mov $2, %dh			# Row 2
+		mov $0, %dl			# Column 0
+		mov $0x1301, %ax	# Function to print a string
+		mov $21, %cx		# Message size
+		mov $error_msg, %bp	# Message address
+
+		int $0x10			# Interrupt
+
+		jmp idle
+
+idle :
+		hlt
+		jmp idle
 
 boot_msg:
 		.asciz "Wow such booting..."
+
+error_msg:
+		.asciz "Kernel loading failed"
 
 signature:
 		.org 510

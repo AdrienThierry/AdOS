@@ -60,4 +60,4 @@ idle :
 		jmp idle
 
 msg :
-		.asciz "Kernel booted ! Wow !"
+		.asciz "Boot complete ! Wow !"
