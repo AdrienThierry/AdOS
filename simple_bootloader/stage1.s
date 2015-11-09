@@ -26,21 +26,21 @@ print :
 
 		int $0x10			# Interrupt
 	
-load_kernel :
+load_stage2 :
 		mov $0x0264, %ax	# Load 64 sectors of floppy into memory
 		movb $0x00, %ch		# First cylinder
 		movb $0x02, %cl		# Sector 2
 		mov $0, %dx			# First drive, first head
-		mov $0x1000, %bx	# Segment to load kernel in
+		mov $0x1000, %bx	# Segment to load stage2 in
 		mov %bx, %es
-		mov $0, %bx			# Offset to load kernel in
+		mov $0, %bx			# Offset to load stage2 in
 		int $0x13			# Interrupt
 
 		mov $0x7c0, %ax
 		mov %ax, %es
 		
 		jc error			# If read error
-		ljmp $0x1000, $0x0000 	# Else Jump to kernel
+		ljmp $0x1000, $0x0000 	# Else Jump to stage2
 
 error :
 		mov $0x0004, %bx	# Page 00 + Background and text color
@@ -62,7 +62,7 @@ boot_msg:
 		.asciz "Wow such booting..."
 
 error_msg:
-		.asciz "Kernel loading failed"
+		.asciz "Stage2 loading failed"
 
 signature:
 		.org 510

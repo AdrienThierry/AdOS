@@ -1,14 +1,14 @@
-simple_bootloader : simple_bootloader.o
-	ld --oformat binary -Ttext 0 -o simple_bootloader simple_bootloader.o
-simple_bootloader.o : simple_bootloader.s
-	as -o simple_bootloader.o simple_bootloader.s
+stage1 : stage1.o
+	ld --oformat binary -Ttext 0 -o stage1 stage1.o
+stage1.o : stage1.s
+	as -o stage1.o stage1.s
 
-kernel : kernel.o
-	ld --oformat binary -Ttext 0 -o kernel kernel.o
-kernel.o : kernel.s
-	as -o kernel.o kernel.s
+stage2 : stage2.o
+	ld --oformat binary -Ttext 0 -o stage2 stage2.o
+stage2.o : stage2.s
+	as -o stage2.o stage2.s
 
-all: kernel simple_bootloader
+all: stage1 stage2
  
 clean : 
-	rm -fv simple_bootloader.o kernel.o
+	rm -fv stage1.o stage2.o

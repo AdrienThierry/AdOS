@@ -60,4 +60,4 @@ idle :
 		jmp idle
 
 msg :
-		.asciz "Boot complete ! Wow !"
+		.asciz "Stage2 loaded ! Wow !"
