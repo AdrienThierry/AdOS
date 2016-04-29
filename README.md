@@ -1,4 +1,4 @@
-# AdOS
+# SimpleOS
 Hobby development of a simple OS in x86 assembly and C.
 
 To run the samples, you have to install **qemu**.
