@@ -20,4 +20,4 @@ Code to go into protected mode. Doesn't work yet.
 
 ### Test_asm_c
 
-Basic example of C code calling an asm function
+Basic example of C code calling an asm function.
