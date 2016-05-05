@@ -17,3 +17,7 @@ Simple bootloader (stage1) that runs on the MBR and loads a stage2 program in an
 ### Protected_mode
 
 Code to go into protected mode. Doesn't work yet.
+
+### Test_asm_c
+
+Basic example of C code calling an asm function
